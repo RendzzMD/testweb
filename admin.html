@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🛠️ Panel Admin</h1>
+
+  <div id="panel" style="display:none;">
+    <button onclick="logout()">Logout</button>
+    <h3>Ubah Notifikasi</h3>
+    <textarea id="notif" rows="3" cols="40" placeholder="Tulis pesan notifikasi..."></textarea><br>
+    <button onclick="simpan()">Simpan (Simulasi)</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    // Cek apakah admin sudah login
+    if (localStorage.getItem("isAdmin") === "true") {
+      document.getElementById("panel").style.display = "block";
+    } else {
+      alert("Kamu belum login!");
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("isAdmin");
+      window.location.href = "login.html";
+    }
+
+    function simpan() {
+      const text = document.getElementById("notif").value;
+      document.getElementById("result").innerText = "✅ Notifikasi disimpan (simulasi): " + text;
+    }
+  </script>
+</body>
+</html>
