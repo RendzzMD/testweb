@@ -3,37 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Admin</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h2 {
+      color: #38bdf8;
+    }
+    textarea {
+      width: 300px;
+      height: 100px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      padding: 10px;
+      font-size: 14px;
+    }
+    button {
+      background: #38bdf8;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0ea5e9;
+    }
+    .status {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-  <h1>🛠️ Panel Admin</h1>
-
-  <div id="panel" style="display:none;">
-    <button onclick="logout()">Logout</button>
-    <h3>Ubah Notifikasi</h3>
-    <textarea id="notif" rows="3" cols="40" placeholder="Tulis pesan notifikasi..."></textarea><br>
-    <button onclick="simpan()">Simpan (Simulasi)</button>
-    <p id="result"></p>
-  </div>
+  <h2>🔔 Kirim Notifikasi ke Semua User</h2>
+  <textarea id="notifText" placeholder="Tulis pesan notifikasi di sini..."></textarea>
+  <button onclick="kirimNotif()">Kirim ke Semua User</button>
+  <div class="status" id="status"></div>
 
   <script>
-    // Cek apakah admin sudah login
-    if (localStorage.getItem("isAdmin") === "true") {
-      document.getElementById("panel").style.display = "block";
-    } else {
-      alert("Kamu belum login!");
-      window.location.href = "login.html";
-    }
+    async function kirimNotif() {
+      const pesan = document.getElementById("notifText").value;
+      const statusEl = document.getElementById("status");
 
-    function logout() {
-      localStorage.removeItem("isAdmin");
-      window.location.href = "login.html";
-    }
+      if (!pesan) {
+        statusEl.innerText = "⚠️ Tulis dulu pesannya bro!";
+        return;
+      }
 
-    function simpan() {
-      const text = document.getElementById("notif").value;
-      document.getElementById("result").innerText = "✅ Notifikasi disimpan (simulasi): " + text;
+      statusEl.innerText = "⏳ Mengirim notif ke GitHub...";
+
+      try {
+        const res = await fetch('/api/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: pesan })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          statusEl.innerText = "✅ Notifikasi berhasil dikirim ke semua user!";
+        } else {
+          statusEl.innerText = "❌ Gagal update, cek token atau user GitHub.";
+        }
+      } catch (err) {
+        statusEl.innerText = "⚠️ Error koneksi: " + err.message;
+      }
     }
   </script>
 </body>
