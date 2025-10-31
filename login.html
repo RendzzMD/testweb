@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🔐 Login Admin</h1>
+
+  <div class="login-box">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Masuk</button>
+    <p id="error" style="color:red;"></p>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+
+      if (user === "admin" && pass === "12345") {
+        localStorage.setItem("isAdmin", "true");
+        window.location.href = "admin.html";
+      } else {
+        document.getElementById("error").innerText = "Username atau password salah!";
+      }
+    }
+  </script>
+</body>
+</html>
