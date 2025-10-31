@@ -1,0 +1,11 @@
+{
+  "notif": {
+    "status": true,
+    "message": "🔥 Promo Top Up Hari Ini! Diskon 30% untuk ML & FF!"
+  },
+  "games": [
+    { "name": "Free Fire", "price": 10000 },
+    { "name": "Mobile Legends", "price": 12000 },
+    { "name": "PUBG Mobile", "price": 15000 }
+  ]
+}
